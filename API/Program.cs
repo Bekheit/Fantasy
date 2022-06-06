@@ -44,6 +44,8 @@ builder.Services.AddDbContext<DataContext>(options =>
     // or from the environment variable from Heroku, use it to set up your DbContext.
     options.UseNpgsql(connStr);
 });
+var context = builder.Services.BuildServiceProvider().GetRequiredService<DataContext>();
+await context.Database.MigrateAsync();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
