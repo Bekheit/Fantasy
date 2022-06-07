@@ -1,0 +1,20 @@
+﻿[
+  {
+    "UserName": "mohamed",
+    "Email": "mohamed@supremia.com",
+    "PhoneNumber": "+20 (974) 459-3874",
+    "TeamName":  "h5a",
+    "Photo": {
+      "Url": "https://randomuser.me/api/portraits/men/21.jpg"
+    }
+  },
+  {
+    "UserName": "ahmed",
+    "Email": "ahmed@supremia.com",
+    "PhoneNumber": "+20 (974) 459-3874",
+    "TeamName": "h5ten",
+    "Photo": {
+      "Url": "https://randomuser.me/api/portraits/men/22.jpg"
+    }
+  }
+]
