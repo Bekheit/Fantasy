@@ -16,7 +16,9 @@ namespace API.Data
 
         public async Task<User> FindByEmailAsync(string email)
         {
-            return await context.Users.SingleOrDefaultAsync(u => u.Email == email );
+            return await context.Users
+                        .Include(u => u.Photo)
+                        .SingleOrDefaultAsync(u => u.Email == email );
             
         }
 
@@ -38,6 +40,7 @@ namespace API.Data
         {
             return await context.SaveChangesAsync() > 0;
         }
+
 
         public void Update(User user)
         {
