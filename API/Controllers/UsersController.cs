@@ -2,6 +2,7 @@
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -23,25 +24,36 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<OperationalResult>>> GetUsers()
         {
             var users = await userRepository.GetUsersAsync();
-            var usersToReturn = mapper.Map<IEnumerable<MemberDto>>(users);
-            return Ok(usersToReturn);
+            OperationalResult result = new();
+            result.Content = mapper.Map<IEnumerable<MemberDto>>(users);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<MemberDto>> GetUser(int id)
+        public async Task<ActionResult<OperationalResult>> GetUser(int id)
         {
             var user = await userRepository.FindByIdAsync(id);
-            return mapper.Map<MemberDto>(user);
+            OperationalResult result = new();
+
+            if (user is null)
+            {
+                result.BadRequest("Invalid user id");
+                return BadRequest(result);
+            }
+            result.Content = mapper.Map<MemberDto>(user);
+            return Ok(result);
         }
 
         [HttpGet("profile")]
-        public async Task<ActionResult<MemberDto>> GetProfile()
+        public async Task<ActionResult<OperationalResult>> GetProfile()
         {
             var user = await userRepository.FindByEmailAsync(User.GetUserEmail());
-            return mapper.Map<MemberDto>(user);
+            OperationalResult result = new();
+            result.Content = mapper.Map<MemberDto>(user);
+            return Ok(result);
         }
     }
 }

@@ -1,7 +1,10 @@
 using API.Data;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
+using API.Middlewares;
 using API.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,8 +18,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddSwaggerAuthorization();
+builder.Services.Configure<ApiBehaviorOptions>(a =>
+{
+    a.InvalidModelStateResponseFactory = context =>
+    {
+        OperationalResult result = new(context);
+
+        return new BadRequestObjectResult(result);
+    };
+});
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
